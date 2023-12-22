@@ -1,0 +1,44 @@
+import { Box, Typography } from "@mui/material";
+import { Navbar } from "../../components/navbar";
+
+import blogLogo from "../../assets/images/blog-logo.png";
+import { Categories } from "../../components/categories";
+import { useState } from "react";
+import { Blogs } from "../../components/blogs";
+
+export type SelectedCategories = Array<number>;
+
+const Home = () => {
+  const [selectedCategories, setSelectedCategories] =
+    useState<SelectedCategories>([]);
+  return (
+    <Box bgcolor="#F3F2FA" height="100vh">
+      <Navbar />
+      <Box display="flex" justifyContent="space-around" alignItems="center">
+        <Typography
+          fontWeight={700}
+          fontFamily={"FiraGo, sans-serif"}
+          fontSize={"64px"}
+          lineHeight={"72px"}
+        >
+          ბლოგი
+        </Typography>
+        <Box
+          component="img"
+          width="624px"
+          height="200px"
+          src={blogLogo}
+          alt="blog logo"
+        />
+      </Box>
+
+      <Categories
+        selectedCategories={selectedCategories}
+        setSelectedCategories={setSelectedCategories}
+      />
+      <Blogs categories={selectedCategories} />
+    </Box>
+  );
+};
+
+export default Home;
