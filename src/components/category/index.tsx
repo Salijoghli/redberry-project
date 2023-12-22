@@ -28,6 +28,7 @@ export const Category = ({
         textAlign: "center",
         border: "1px solid #fff",
         borderColor: selectedCategories?.includes(id) ? "black" : "#fff",
+        borderRadius: "30px",
         opacity: 0.9,
         "&:hover": {
           backgroundColor: background_color,

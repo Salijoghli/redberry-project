@@ -21,7 +21,7 @@ function App() {
         path="new-blog"
         element={<ProtectedRoute element={<NewBlog />} />}
       />
-      <Route path="blog-details:id" element={<BlogDetails />} />
+      <Route path="blog-details/:id" element={<BlogDetails />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -31,9 +31,12 @@ export const DataProvider = ({ children }: DataProviderProps) => {
       setCategories(categories.data);
     });
 
+    //making sure the dates ain't no in future
     getBlogs()
       .then((blogs) => {
-        setBlogs(blogs.data);
+        setBlogs(
+          blogs.data.filter((blog) => new Date(blog.publish_date) < new Date())
+        );
       })
       .catch((err) => {
         console.error(err);
