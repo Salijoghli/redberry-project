@@ -3,6 +3,14 @@ import { TBlog } from "../../api/blogs/api";
 import { Category } from "../category";
 import { useNavigate } from "react-router-dom";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+
+type Variant = {
+  size?: "big" | "small";
+};
+
+type BlogProps = TBlog & Variant;
+
+//made this blog conditional (blog details) so i wouldnt re write the whole thing
 export const Blog = ({
   title,
   author,
@@ -11,15 +19,29 @@ export const Blog = ({
   id,
   image,
   publish_date,
-}: TBlog) => {
+  email,
+  size = "small",
+}: BlogProps) => {
   const navigate = useNavigate();
 
+  const blogSize = size === "small";
+  //if blog is small (home page) show 3 most recent categories
+  const sCategories = blogSize ? categories.slice(0, 3) : categories;
   return (
-    <Stack width="408px" height="620px" gap={3}>
+    <Stack
+      width={blogSize ? "408px" : "720px"}
+      height={blogSize ? "620px" : "auto"}
+      gap={blogSize ? 3 : 5}
+      margin="auto"
+      sx={{
+        my: !blogSize ? 5 : "",
+      }}
+    >
       <Box
         component="img"
         width="100%"
         height="328px"
+        borderRadius={"12px"}
         sx={{
           objectFit: "cover",
         }}
@@ -50,25 +72,31 @@ export const Blog = ({
             lineHeight={"16px"}
             color={"#85858D"}
           >
-            {publish_date}
+            {publish_date} {email}
           </Typography>
         </Stack>
         <Typography
           fontFamily="FiraGo, sans-serif"
-          fontWeight={500}
-          fontSize="20px"
+          fontWeight={blogSize ? 500 : 700}
+          fontSize={blogSize ? "20px" : "32px"}
           color="#1A1A1F"
-          lineHeight={"28px"}
+          lineHeight={blogSize ? "28px" : "40px"}
         >
           {title}
         </Typography>
-        <Box display="flex" maxWidth="408px" overflow={"hidden"} gap="16px">
-          {categories.slice(0, 3).map((category) => (
+        <Box
+          display="flex"
+          width="100%"
+          maxWidth="100%"
+          flexWrap={"wrap"}
+          gap="16px"
+        >
+          {sCategories.map((category) => (
             <Category key={category.id} {...category} />
           ))}
         </Box>
         <Typography
-          overflow={"hidden"}
+          overflow={blogSize ? "hidden" : "unset"}
           width="100%"
           fontWeight={400}
           fontSize="16px"
@@ -79,24 +107,26 @@ export const Blog = ({
         >
           {description}
         </Typography>
-        <Button
-          variant="text"
-          size="small"
-          sx={{
-            fontWeight: 500,
-            fontFamily: "FiraGo, sans-serif",
-            lineHeight: "20px",
-            fontSize: "14px",
-            m: 0,
-            width: "148px",
-          }}
-          onClick={() => {
-            navigate(`blog-details/${id}`);
-          }}
-          endIcon={<ArrowOutwardIcon />}
-        >
-          სრულად ნახვა
-        </Button>
+        {blogSize && (
+          <Button
+            variant="text"
+            size="small"
+            sx={{
+              fontWeight: 500,
+              fontFamily: "FiraGo, sans-serif",
+              lineHeight: "20px",
+              fontSize: "14px",
+              m: 0,
+              width: "148px",
+            }}
+            onClick={() => {
+              navigate(`blog-details/${id}`);
+            }}
+            endIcon={<ArrowOutwardIcon />}
+          >
+            სრულად ნახვა
+          </Button>
+        )}
       </Stack>
     </Stack>
   );

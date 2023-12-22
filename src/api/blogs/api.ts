@@ -17,6 +17,7 @@ export type TBlog = {
   publish_date: string;
   categories: TCategories;
   author: string;
+  email?: string;
 };
 
 export type TBlogs = Array<TBlog>;

@@ -79,6 +79,7 @@ export const Navbar = () => {
       alignItems="center"
       bgcolor="#fff"
       borderBottom={1}
+      borderColor={"#E4E3EB"}
     >
       <Box
         component="img"
