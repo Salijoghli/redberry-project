@@ -78,6 +78,7 @@ export const Navbar = () => {
       justifyContent={"space-between"}
       alignItems="center"
       bgcolor="#fff"
+      borderBottom={1}
     >
       <Box
         component="img"

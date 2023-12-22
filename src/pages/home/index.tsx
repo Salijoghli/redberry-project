@@ -12,9 +12,15 @@ const Home = () => {
   const [selectedCategories, setSelectedCategories] =
     useState<SelectedCategories>([]);
   return (
-    <Box bgcolor="#F3F2FA" height="100vh">
+    <Box>
       <Navbar />
-      <Box display="flex" justifyContent="space-around" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        px={12}
+        py={10}
+      >
         <Typography
           fontWeight={700}
           fontFamily={"FiraGo, sans-serif"}
@@ -36,7 +42,7 @@ const Home = () => {
         selectedCategories={selectedCategories}
         setSelectedCategories={setSelectedCategories}
       />
-      <Blogs categories={selectedCategories} />
+      <Blogs selectedCategories={selectedCategories} />
     </Box>
   );
 };

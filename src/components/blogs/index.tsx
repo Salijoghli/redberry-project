@@ -1,27 +1,41 @@
-import { useEffect, useState } from "react";
 import { useData } from "../../context";
-import { TBlogs } from "../../api/blogs/api";
 import { SelectedCategories } from "../../pages/home";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { Blog } from "../blog";
 
 type BlogsProps = {
-  categories: SelectedCategories;
+  selectedCategories: SelectedCategories;
 };
 
-export const Blogs = ({ categories }: BlogsProps) => {
+export const Blogs = ({ selectedCategories }: BlogsProps) => {
   const { blogs } = useData();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [filteredBlogs, setFilteredBlogs] = useState<TBlogs>(blogs);
-  useEffect(() => {}, [categories]);
+
+  const filteredBlogs =
+    selectedCategories.length > 0
+      ? blogs.filter((blog) =>
+          blog.categories.some((category) =>
+            selectedCategories.includes(category.id)
+          )
+        )
+      : blogs;
 
   return (
     <Box
       display="flex"
       flexWrap="wrap"
-      width="100%"
-      maxWidth="1288px"
+      width="1288px"
+      maxWidth="100%"
       margin="auto"
       gap="32px"
-    ></Box>
+      py={7}
+    >
+      {filteredBlogs.length > 0 ? (
+        filteredBlogs.map((blog) => <Blog key={blog.id} {...blog} />)
+      ) : (
+        <Typography variant="h1" margin={"auto"} textAlign={"center"}>
+          Couldn't find any blog
+        </Typography>
+      )}
+    </Box>
   );
 };
