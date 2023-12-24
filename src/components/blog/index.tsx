@@ -120,7 +120,7 @@ export const Blog = ({
               width: "148px",
             }}
             onClick={() => {
-              navigate(`blog-details/${id}`);
+              navigate(`/blog-details/${id}`);
             }}
             endIcon={<ArrowOutwardIcon />}
           >
