@@ -40,7 +40,7 @@ export const getCategories = async () =>
     "https://api.blog.redberryinternship.ge/api/categories"
   );
 
-type BlogInput = Pick<TBlog, "id">;
+export type BlogInput = Omit<TBlog, "id">;
 
 // add new blog
 export const createBlog = async (body: BlogInput) =>

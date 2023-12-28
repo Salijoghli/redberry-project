@@ -1,20 +1,19 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { TBlog, TBlogs, getBlog } from "../../api/blogs/api";
 import { useEffect, useState } from "react";
-import { Box, CircularProgress, Typography, IconButton } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { Navbar } from "../../components/navbar";
 import { Blog } from "../../components/blog";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { useData } from "../../context";
 import Carousel from "react-material-ui-carousel";
 import { Card, Grid, Stack } from "@mui/material";
+import { HomeReturnArrow } from "../../components/home-return-arrow";
 
 const BlogDetails = () => {
   const { blogId } = useParams();
   const [blog, setBlog] = useState<TBlog>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
   const { blogs } = useData();
 
   const [similarBlogs, setSimilarBlogs] = useState<TBlogs>([]);
@@ -98,7 +97,7 @@ const BlogDetails = () => {
   }
 
   return (
-    <Box>
+    <Box bgcolor="#FBFAFF">
       <Navbar />
       {!blog ? (
         <Typography variant="h6" color="error">
@@ -106,23 +105,7 @@ const BlogDetails = () => {
         </Typography>
       ) : (
         <>
-          <IconButton
-            sx={{
-              background: "#fff",
-              position: "absolute",
-              m: 4,
-            }}
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            <KeyboardArrowLeftIcon
-              sx={{
-                fontSize: "2rem",
-                color: "#1A1A1F",
-              }}
-            />
-          </IconButton>
+          <HomeReturnArrow />
           <Blog {...blog} size="big" />
         </>
       )}

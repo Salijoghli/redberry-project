@@ -70,9 +70,11 @@ export const Navbar = () => {
     }
   };
 
+  const isNewBlogPage = window.location.pathname === "/new-blog";
+
   return (
     <Box
-      width="100vw"
+      width="calc(100vw - 76px - 76px)"
       height="80px"
       display="flex"
       justifyContent={"space-between"}
@@ -80,20 +82,15 @@ export const Navbar = () => {
       bgcolor="#fff"
       borderBottom={1}
       borderColor={"#E4E3EB"}
+      px={9.5}
     >
-      <Box
-        component="img"
-        src={navbarLogo}
-        width={"150px"}
-        height={"24px"}
-        paddingLeft={"76px"}
-      />
-      <Box display="flex">
+      <Box component="img" src={navbarLogo} width={"150px"} height={"24px"} />
+      <Box display="flex" gap={3}>
         <Button
           variant="contained"
           sx={{
             fontFamily: "FiraGo",
-            marginRight: "76px",
+            display: isNewBlogPage ? "none" : "block",
           }}
           onClick={() => {
             isAuthorized ? navigate("/new-blog") : handleLoginModalOpen();
@@ -124,7 +121,6 @@ export const Navbar = () => {
       >
         <Stack sx={modalStyle} component={"form"}>
           <IconButton
-            aria-label="delete"
             sx={{
               display: "flex",
               alignItems: "right",
