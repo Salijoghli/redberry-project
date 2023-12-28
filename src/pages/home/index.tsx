@@ -12,7 +12,7 @@ const Home = () => {
   const [selectedCategories, setSelectedCategories] =
     useState<SelectedCategories>([]);
   return (
-    <Box>
+    <Box bgcolor="#FBFAFF">
       <Navbar />
       <Box
         display="flex"

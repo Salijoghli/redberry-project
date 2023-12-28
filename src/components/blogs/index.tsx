@@ -9,7 +9,6 @@ type BlogsProps = {
 
 export const Blogs = ({ selectedCategories }: BlogsProps) => {
   const { blogs } = useData();
-
   const filteredBlogs =
     selectedCategories.length > 0
       ? blogs.filter((blog) =>

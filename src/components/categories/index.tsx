@@ -25,6 +25,7 @@ export const Categories = ({
       setSelectedCategories(filteredCategories);
     }
   };
+
   return (
     <Box
       width="684px"
