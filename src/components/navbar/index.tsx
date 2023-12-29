@@ -1,31 +1,10 @@
-import {
-  Button,
-  Box,
-  Stack,
-  Modal,
-  Typography,
-  TextField,
-  IconButton,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import ErrorIcon from "@mui/icons-material/Error";
-import CheckIcon from "@mui/icons-material/Check";
-import navbarLogo from "../../assets/images/navbar-logo.png";
+import { Button, Box, Typography, TextField, Stack } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "480px",
-  height: "272px",
-  bgcolor: "background.paper",
-  borderRadius: 4,
-  p: 4,
-  alignItems: "center",
-};
+import ErrorIcon from "@mui/icons-material/Error";
+import navbarLogo from "../../assets/images/navbar-logo.png";
+import { Modal } from "../modal";
+import { ModalSuccess } from "../modal/success";
 
 export const Navbar = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -44,7 +23,6 @@ export const Navbar = () => {
     if (successfulLogin) {
       handleLoginModalOpen();
       location.reload();
-
       return;
     }
 
@@ -89,7 +67,6 @@ export const Navbar = () => {
         <Button
           variant="contained"
           sx={{
-            fontFamily: "FiraGo",
             display: isNewBlogPage ? "none" : "block",
           }}
           onClick={() => {
@@ -105,84 +82,46 @@ export const Navbar = () => {
               sessionStorage.clear();
               setIsAuthorized((prev) => !prev);
               location.reload();
+              navigate("/");
             }}
           >
             გასვლა
           </Button>
         )}
       </Box>
-      <Modal
-        open={openLoginModal}
-        onClose={() => {
-          handleLoginModalOpen();
-        }}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Stack sx={modalStyle} component={"form"}>
-          <IconButton
-            sx={{
-              display: "flex",
-              alignItems: "right",
-              justifyContent: "right",
-              p: 0,
-              m: 0,
-              width: "100%",
-              "&.MuiButtonBase-root:hover": {
-                bgcolor: "transparent",
-              },
-            }}
-            onClick={() => {
-              handleLoginModalOpen();
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-          {successfulLogin && (
-            <Box
-              width="64px"
-              height="64px"
-              borderRadius={"50%"}
-              bgcolor={"#14D81C"}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              my={2}
+      {isAuthorized ? (
+        <ModalSuccess
+          openModal={openLoginModal}
+          setOpenModal={setOpenLoginModal}
+          linkText="კარგი"
+          text="წარმატებული ავრორიზაცია"
+        />
+      ) : (
+        <Modal isModalOpen={openLoginModal} setIsModalOpen={setOpenLoginModal}>
+          <Stack spacing={loginErr ? 3 : 5}>
+            <Typography
+              variant="h5"
+              component="h2"
+              textAlign={"center"}
+              sx={{
+                fontWeight: 700,
+                lineHeight: "32px",
+              }}
             >
-              <CheckIcon
-                fontSize="large"
-                sx={{
-                  color: "#fff",
-                }}
-              />
-            </Box>
-          )}
-          <Typography
-            variant="h6"
-            component="h2"
-            textAlign={"center"}
-            sx={{
-              fontFamily: "FiraGo, sans-serif",
-              fontSize: "1.8em",
-              marginBottom: 4,
-              fontWeight: 700,
-              lineHeight: successfulLogin ? "28px" : "32px",
-            }}
-          >
-            {successfulLogin ? `წარმატებული ავტორიზაცია` : `შესვლა`}
-          </Typography>
+              {`შესვლა`}
+            </Typography>
 
-          {!successfulLogin && (
             <TextField
               label="ელ-ფოსტა"
               variant="outlined"
-              fullWidth
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               InputProps={{
                 style: {
                   borderRadius: "10px",
+                  width: "430px",
+                  margin: "auto",
                 },
               }}
               error={loginErr}
@@ -194,22 +133,21 @@ export const Navbar = () => {
                 ) : null
               }
             />
-          )}
-
-          <Button
-            fullWidth
-            variant="contained"
-            size="large"
-            disabled={!email.endsWith("@redberry.ge")}
-            sx={{
-              m: 4,
-            }}
-            onClick={() => handleLoginButtonClick()}
-          >
-            {successfulLogin ? `კარგი` : `შესვლა`}
-          </Button>
-        </Stack>
-      </Modal>
+            <Button
+              fullWidth
+              variant="contained"
+              size="large"
+              disabled={!email.endsWith("@redberry.ge")}
+              sx={{
+                width: "430px",
+              }}
+              onClick={() => handleLoginButtonClick()}
+            >
+              {`შესვლა`}
+            </Button>
+          </Stack>
+        </Modal>
+      )}
     </Box>
   );
 };

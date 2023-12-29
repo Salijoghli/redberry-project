@@ -43,7 +43,7 @@ export const Blog = ({
         height="328px"
         borderRadius={"12px"}
         sx={{
-          objectFit: "cover",
+          objectFit: "contain",
         }}
         src={image}
         alt="card image"
