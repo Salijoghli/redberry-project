@@ -127,7 +127,6 @@ const NewBlog = () => {
               property="author"
               value={formData.author}
               setData={setFormData}
-              applyAllRules
               label="ავტორი *"
               setIsValidForm={setIsValidForm}
             />
