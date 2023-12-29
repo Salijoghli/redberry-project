@@ -128,7 +128,7 @@ const NewBlog = () => {
               value={formData.author}
               setData={setFormData}
               applyAllRules
-              label="ავტორი"
+              label="ავტორი *"
               setIsValidForm={setIsValidForm}
             />
 
@@ -136,7 +136,7 @@ const NewBlog = () => {
               property="title"
               value={formData.title}
               setData={setFormData}
-              label="სათაური"
+              label="სათაური *"
               setIsValidForm={setIsValidForm}
             />
           </Box>
@@ -145,7 +145,7 @@ const NewBlog = () => {
             property="description"
             value={formData.description}
             setData={setFormData}
-            label="აღწერა"
+            label="აღწერა *"
             multiline
             fullWidth
             setIsValidForm={setIsValidForm}

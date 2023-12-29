@@ -54,6 +54,11 @@ export const ModalSuccess = ({
         sx={{
           width: "430px",
           marginTop: 1,
+          borderRadius: "8px",
+          backgroundColor: "#5D37F3",
+          "&:hover": {
+            backgroundColor: "#5D37e3",
+          },
         }}
         onClick={handleButtonCLick}
       >

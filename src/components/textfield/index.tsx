@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { BlogInput } from "../../api/blogs/api";
 import { Stack, TextField, Typography } from "@mui/material";
 
+// const
+
 const validateInput = (
   property: keyof BlogInput,
   value: string,
@@ -91,7 +93,7 @@ export const InputField = ({
   return (
     <Stack width={fullWidth ? "100%" : "288px"} spacing={1}>
       <Typography fontWeight={500} lineHeight="20px" color="#1A1A1F">
-        {label} *
+        {label}
       </Typography>
       <TextField
         variant="outlined"
@@ -110,10 +112,17 @@ export const InputField = ({
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
               borderColor: isError
-                ? "red"
+                ? "#EA1919"
                 : errorMessages.length === 0 && value.trim() !== ""
                 ? "#14D81C"
                 : "",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: isError
+                ? "#EA1919"
+                : errorMessages.length === 0 && value.trim() !== ""
+                ? "#14D81C"
+                : "#5D37F3",
             },
           },
         }}
