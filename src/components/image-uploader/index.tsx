@@ -7,30 +7,35 @@ import ClearIcon from "@mui/icons-material/Clear";
 import ImageIcon from "@mui/icons-material/Image";
 
 type ImageUploaderProps = {
-  image: string;
+  image: Blob | null;
   setFormData: React.Dispatch<React.SetStateAction<BlogInput>>;
-  setIsValidImage: React.Dispatch<React.SetStateAction<boolean>>;
   formSubmitted: boolean;
 };
 
 export const ImageUploader = ({
   image,
   setFormData,
-  setIsValidImage,
   formSubmitted,
 }: ImageUploaderProps) => {
   const [fileName, setFileName] = useState("");
 
   const handleImageChange = (files: FileList | null) => {
     if (files) {
-      files[0] && setFileName(files[0].name);
-      setFormData((prevData) => ({
-        ...prevData,
-        image: URL.createObjectURL(files[0]),
-      }));
-      setIsValidImage(true);
-    } else {
-      setIsValidImage(false);
+      const selectedFile = files[0];
+      setFileName(selectedFile.name);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const blob = new Blob([reader.result as ArrayBuffer], {
+          type: selectedFile.type,
+        });
+        setFormData((prevData) => ({
+          ...prevData,
+          image: blob,
+        }));
+      };
+
+      reader.readAsArrayBuffer(selectedFile);
     }
   };
 
@@ -120,7 +125,7 @@ export const ImageUploader = ({
             onClick={() => {
               setFormData((prevData) => ({
                 ...prevData,
-                image: "",
+                image: null,
               }));
               setFileName("");
             }}
