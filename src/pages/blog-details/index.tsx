@@ -97,7 +97,7 @@ const BlogDetails = () => {
   }
 
   return (
-    <Box bgcolor="#FBFAFF">
+    <Box>
       <Navbar />
       {!blog ? (
         <Typography variant="h6" color="error">
@@ -110,27 +110,39 @@ const BlogDetails = () => {
         </>
       )}
 
-      <Stack width="1288px" margin="auto" spacing={3}>
+      {items.length > 0 ? (
+        <Stack width="1288px" margin="auto" spacing={3}>
+          <Typography
+            fontWeight={700}
+            fontSize="32px"
+            lineHeight={"40px"}
+            color="#1A1A1F"
+            width="720px"
+            px={2}
+          >
+            მსგავსი სტატიები
+          </Typography>
+          <Carousel
+            autoPlay={false}
+            animation="slide"
+            navButtonsAlwaysVisible
+            indicators={false}
+          >
+            {items}
+          </Carousel>
+        </Stack>
+      ) : (
         <Typography
           fontWeight={700}
-          fontFamily={"FiraGO"}
-          fontSize="32px"
+          variant="h2"
           lineHeight={"40px"}
           color="#1A1A1F"
-          width="720px"
-          px={2}
+          textAlign="center"
+          marginBottom={10}
         >
-          მსგავსი სტატიები
+          ვერ მოიძებნა მსგავსი სტატია
         </Typography>
-        <Carousel
-          autoPlay={false}
-          animation="slide"
-          navButtonsAlwaysVisible
-          indicators={false}
-        >
-          {items}
-        </Carousel>
-      </Stack>
+      )}
     </Box>
   );
 };
