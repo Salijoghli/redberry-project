@@ -31,8 +31,8 @@ export const Blogs = ({ selectedCategories }: BlogsProps) => {
       {filteredBlogs.length > 0 ? (
         filteredBlogs.map((blog) => <Blog key={blog.id} {...blog} />)
       ) : (
-        <Typography variant="h1" margin={"auto"} textAlign={"center"}>
-          Couldn't find any blog
+        <Typography variant="h4" margin={"auto"} textAlign={"center"}>
+          ვერ მოიძება ბლოგები
         </Typography>
       )}
     </Box>

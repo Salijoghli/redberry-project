@@ -97,7 +97,7 @@ const NewBlog = () => {
   }, [formData]);
 
   return (
-    <Box position="relative" bgcolor="#FBFAFF">
+    <Box position="relative">
       <Navbar />
       <HomeReturnArrow />
       <Stack width="600px" margin="auto" my={5} spacing={5} textAlign="left">
