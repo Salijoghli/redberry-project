@@ -127,8 +127,7 @@ const NewBlog = () => {
               property="author"
               value={formData.author}
               setData={setFormData}
-              applyAllRules
-              label="ავტორი"
+              label="ავტორი *"
               setIsValidForm={setIsValidForm}
             />
 
@@ -136,7 +135,7 @@ const NewBlog = () => {
               property="title"
               value={formData.title}
               setData={setFormData}
-              label="სათაური"
+              label="სათაური *"
               setIsValidForm={setIsValidForm}
             />
           </Box>
@@ -145,7 +144,7 @@ const NewBlog = () => {
             property="description"
             value={formData.description}
             setData={setFormData}
-            label="აღწერა"
+            label="აღწერა *"
             multiline
             fullWidth
             setIsValidForm={setIsValidForm}
@@ -158,6 +157,7 @@ const NewBlog = () => {
                 type="date"
                 value={formData.publish_date}
                 required
+                color="success"
                 onChange={(e) => handleDateChange(e.target.value)}
                 InputProps={{
                   style: {
@@ -187,6 +187,10 @@ const NewBlog = () => {
               sx={{
                 width: "288px",
                 borderRadius: "8px",
+                backgroundColor: "#5D37F3",
+                "&:hover": {
+                  backgroundColor: "#5D37e3",
+                },
               }}
               disabled={!isValidForm}
             >

@@ -2,58 +2,101 @@ import React, { useEffect } from "react";
 import { BlogInput } from "../../api/blogs/api";
 import { Stack, TextField, Typography } from "@mui/material";
 
-const validateInput = (
-  property: keyof BlogInput,
-  value: string,
-  applyAllRules?: boolean,
-  minLettersCount?: number
-) => {
-  const errorMessages: string[] = [];
+const minLettersCount = (value: string, minLettersCount: number) =>
+  value.replace(/\s+/g, "").length < (minLettersCount || 4);
 
-  if (value.trim() === "") {
-    return errorMessages;
+const getColor = (condition: boolean, text: string) =>
+  text.trim() == "" ? "#85858D" : condition ? "#EA1919" : "#14D81C";
+
+const typographyStyles = {
+  fontWeight: 400,
+  fontSize: "12px",
+  lineHeight: "20px",
+};
+
+type Property = keyof Pick<
+  BlogInput,
+  "author" | "description" | "title" | "email"
+>;
+
+//generate helper texts based on property
+const GenerateValidationInfo = (property: Property, text: string) => {
+  if (property === "author") {
+    const authorErrors = {
+      firstRule: minLettersCount(text, 4),
+      secondRule:
+        text.split(/\s+/).filter((word) => word.trim() !== "").length < 2,
+      thirdRule: !/^[ა-ჰ\s]+$/.test(text),
+    };
+    const isError =
+      text.trim() !== "" &&
+      Object.values(authorErrors).some((error) => error === true);
+    return {
+      data: [
+        <Typography
+          {...typographyStyles}
+          color={getColor(authorErrors.firstRule, text)}
+        >
+          * მინიმუმ 4 სიმბოლო
+        </Typography>,
+        <Typography
+          color={getColor(authorErrors.secondRule, text)}
+          {...typographyStyles}
+        >
+          * მინიმუმ 2 სიტყვა
+        </Typography>,
+        <Typography
+          color={getColor(authorErrors.thirdRule, text)}
+          {...typographyStyles}
+        >
+          * მხოლოდ ქართული ასოები
+        </Typography>,
+      ],
+      error: isError,
+    };
   }
-
   if (property === "email") {
-    // email rule:
-    if (!value.endsWith("@redberry.ge")) {
-      errorMessages.push("მეილი უნდა მთავრდებოდეს @redberry.ge - ით");
-    }
-    return errorMessages;
+    const isError =
+      text.trim() !== "" &&
+      /^[\w]{3,255}?[a-zA-Z0-9]{0,255}@redberry\.ge$/.test(text);
+    return {
+      data: [
+        <Typography color={getColor(isError, text)} {...typographyStyles}>
+          მეილი უნდა მთავრდებოდეს @redberry.ge-ით
+        </Typography>,
+      ],
+      error: isError,
+    };
   }
-
-  // Rule 1:
-  if (value.replace(/\s+/g, "").length < (minLettersCount || 4)) {
-    errorMessages.push("მინიმუმ 4 სიმბოლო");
+  if (property === "description") {
+    const isError = text.trim() !== "" && minLettersCount(text, 2);
+    return {
+      data: [
+        <Typography color={getColor(isError, text)} {...typographyStyles}>
+          * მინიმუმ ორი სიმბოლო
+        </Typography>,
+      ],
+      error: isError,
+    };
   }
-
-  // Apply all rules if specified
-  if (applyAllRules) {
-    // Rule 2:
-    const nonEmptyWords = value
-      .split(/\s+/)
-      .filter((word) => word.trim() !== "");
-    if (nonEmptyWords.length < 2) {
-      errorMessages.push("მინიმუმ 2 სიტყვა");
-    }
-
-    // Rule 3:
-    const georgianLettersRegex = /^[ა-ჰ\s]+$/;
-    if (!georgianLettersRegex.test(value)) {
-      errorMessages.push("მხოლოდ ქართული ასოები");
-    }
-  }
-
-  return errorMessages;
+  return {
+    data: [
+      <Typography
+        color={getColor(minLettersCount(text, 4), text)}
+        {...typographyStyles}
+      >
+        * მინიმუმ ოთხი სიმბოლო
+      </Typography>,
+    ],
+    error: text.trim() !== "" && minLettersCount(text, 4),
+  };
 };
 
 type InputFieldProps = {
-  property: keyof BlogInput;
+  property: Property;
   label: string;
   setData: React.Dispatch<React.SetStateAction<BlogInput>>;
   setIsValidForm: React.Dispatch<React.SetStateAction<boolean>>;
-  applyAllRules?: boolean;
-  minLettersCount?: number;
   multiline?: boolean;
   fullWidth?: boolean;
   value?: string;
@@ -63,20 +106,11 @@ export const InputField = ({
   property,
   value = "",
   setData,
-  applyAllRules,
   label,
   multiline,
-  setIsValidForm,
   fullWidth,
-  minLettersCount = 4,
+  setIsValidForm,
 }: InputFieldProps) => {
-  const errorMessages = validateInput(
-    property,
-    value,
-    applyAllRules,
-    minLettersCount
-  );
-  const isError = errorMessages.length > 0;
   const handleInputChange = (value: string) => {
     setData((prevData) => ({
       ...prevData,
@@ -84,18 +118,20 @@ export const InputField = ({
     }));
   };
 
+  const { data, error } = GenerateValidationInfo(property, value);
+
   useEffect(() => {
-    if (property !== "email") setIsValidForm(!isError);
-  }, [isError]);
+    if (property !== "email") setIsValidForm(!error);
+  }, [error]);
 
   return (
     <Stack width={fullWidth ? "100%" : "288px"} spacing={1}>
       <Typography fontWeight={500} lineHeight="20px" color="#1A1A1F">
-        {label} *
+        {label}
       </Typography>
       <TextField
         variant="outlined"
-        error={isError}
+        error={error}
         value={value}
         required={property !== "email"}
         multiline={multiline}
@@ -109,22 +145,15 @@ export const InputField = ({
         sx={{
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
-              borderColor:
-                errorMessages.length !== 0 && !isError ? "#14D81C" : "",
+              borderColor: getColor(error, value),
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: error ? "#85858D" : "#5D37F3",
             },
           },
         }}
         onChange={(e) => handleInputChange(e.target.value)}
-        helperText={errorMessages.map((message, index) => (
-          <Typography
-            key={index}
-            fontSize="12px"
-            lineHeight="20px"
-            color="error"
-          >
-            * {message}
-          </Typography>
-        ))}
+        helperText={data}
       />
     </Stack>
   );

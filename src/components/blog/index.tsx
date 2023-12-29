@@ -118,6 +118,7 @@ export const Blog = ({
               fontSize: "14px",
               m: 0,
               width: "148px",
+              color: "#5D37F3",
             }}
             onClick={() => {
               navigate(`/blog-details/${id}`);
