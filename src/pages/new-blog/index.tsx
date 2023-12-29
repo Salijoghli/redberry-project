@@ -158,6 +158,7 @@ const NewBlog = () => {
                 type="date"
                 value={formData.publish_date}
                 required
+                color="success"
                 onChange={(e) => handleDateChange(e.target.value)}
                 InputProps={{
                   style: {
@@ -187,6 +188,10 @@ const NewBlog = () => {
               sx={{
                 width: "288px",
                 borderRadius: "8px",
+                backgroundColor: "#5D37F3",
+                "&:hover": {
+                  backgroundColor: "#5D37e3",
+                },
               }}
               disabled={!isValidForm}
             >

@@ -1,16 +1,15 @@
 import { Button, Box, Typography, TextField, Stack } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ErrorIcon from "@mui/icons-material/Error";
-import navbarLogo from "../../assets/images/navbar-logo.png";
 import { Modal } from "../modal";
 import { ModalSuccess } from "../modal/success";
+import ErrorIcon from "@mui/icons-material/Error";
+import navbarLogo from "../../assets/images/navbar-logo.png";
 
 export const Navbar = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [email, setEmail] = useState("");
   const [loginErr, setLoginErr] = useState(false);
-  const [successfulLogin, setSuccessfulLogin] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(
     sessionStorage.getItem("email") !== null
   );
@@ -20,12 +19,6 @@ export const Navbar = () => {
   const handleLoginErr = () => setLoginErr((prev) => !prev);
 
   const handleLoginButtonClick = async () => {
-    if (successfulLogin) {
-      handleLoginModalOpen();
-      location.reload();
-      return;
-    }
-
     try {
       const response = await fetch(
         "https://api.blog.redberryinternship.ge/api/login",
@@ -38,8 +31,8 @@ export const Navbar = () => {
         }
       );
       if (response.status == 204) {
-        setSuccessfulLogin((prev) => !prev);
         sessionStorage.setItem("email", email);
+        setIsAuthorized((prev) => !prev);
       } else {
         handleLoginErr();
       }
@@ -52,7 +45,7 @@ export const Navbar = () => {
 
   return (
     <Box
-      width="calc(100vw - 76px - 76px)"
+      width="calc(100% - 76px - 76px)"
       height="80px"
       display="flex"
       justifyContent={"space-between"}
@@ -68,6 +61,11 @@ export const Navbar = () => {
           variant="contained"
           sx={{
             display: isNewBlogPage ? "none" : "block",
+            borderRadius: "8px",
+            backgroundColor: "#5D37F3",
+            "&:hover": {
+              backgroundColor: "#5D37e3",
+            },
           }}
           onClick={() => {
             isAuthorized ? navigate("/new-blog") : handleLoginModalOpen();
@@ -80,8 +78,8 @@ export const Navbar = () => {
           <Button
             onClick={() => {
               sessionStorage.clear();
+              console.log(sessionStorage, "after");
               setIsAuthorized((prev) => !prev);
-              location.reload();
               navigate("/");
             }}
           >
@@ -124,7 +122,10 @@ export const Navbar = () => {
                   margin: "auto",
                 },
               }}
-              error={loginErr}
+              error={
+                loginErr ||
+                (email.trim() !== "" && !email.endsWith("@redberry.ge"))
+              }
               helperText={
                 loginErr ? (
                   <Box display="flex" alignItems="center" gap={1} marginTop={1}>
@@ -134,12 +135,14 @@ export const Navbar = () => {
               }
             />
             <Button
-              fullWidth
               variant="contained"
               size="large"
-              disabled={!email.endsWith("@redberry.ge")}
               sx={{
                 width: "430px",
+                backgroundColor: "#5D37F3",
+                "&:hover": {
+                  backgroundColor: "#5D37e3",
+                },
               }}
               onClick={() => handleLoginButtonClick()}
             >

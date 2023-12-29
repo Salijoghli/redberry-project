@@ -109,8 +109,11 @@ export const InputField = ({
         sx={{
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
-              borderColor:
-                errorMessages.length !== 0 && !isError ? "#14D81C" : "",
+              borderColor: isError
+                ? "red"
+                : errorMessages.length === 0 && value.trim() !== ""
+                ? "#14D81C"
+                : "",
             },
           },
         }}
