@@ -43,21 +43,14 @@ export const Blog = ({
         height="328px"
         borderRadius={"12px"}
         sx={{
-          objectFit: "contain",
+          objectFit: "cover",
         }}
         src={image}
         alt="card image"
       />
-      <Stack
-        width="100%"
-        height="268px"
-        spacing={2}
-        alignItems="left"
-        justifyContent={"left"}
-      >
+      <Stack width="100%" spacing={2} alignItems="left" justifyContent={"left"}>
         <Stack spacing={1}>
           <Typography
-            fontFamily="FiraGo, sans-serif"
             fontWeight={500}
             fontSize="16px"
             lineHeight={"20px"}
@@ -66,7 +59,6 @@ export const Blog = ({
             {author}
           </Typography>
           <Typography
-            fontFamily="FiraGo, sans-serif"
             fontWeight={400}
             fontSize="12px"
             lineHeight={"16px"}
@@ -76,7 +68,6 @@ export const Blog = ({
           </Typography>
         </Stack>
         <Typography
-          fontFamily="FiraGo, sans-serif"
           fontWeight={blogSize ? 500 : 700}
           fontSize={blogSize ? "20px" : "32px"}
           color="#1A1A1F"
@@ -102,7 +93,7 @@ export const Blog = ({
           fontSize="16px"
           lineHeight={"28px"}
           fontFamily={"FiraGO"}
-          height={"56px"}
+          height={blogSize ? "56px" : "auto"}
           color={"#404049"}
         >
           {description}
