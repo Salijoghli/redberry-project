@@ -1,3 +1,4 @@
+The app's not responsive, it was made for 1920 screens
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
